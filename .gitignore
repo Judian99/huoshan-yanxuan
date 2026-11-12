@@ -1,0 +1,12 @@
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+.claude/
+
+# 本地依赖与缓存（如未来出现）
+node_modules/
+.npm/
+.vstest/

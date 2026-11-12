@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-demo="b">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#efe2c6">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="火山严选">
+  <title>火山严选 · 手帐食谱本</title>
+  <link rel="stylesheet" href="../shared/base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="b-boot" id="b-boot" role="status" aria-live="polite">
+    <span class="b-boot__seal" aria-hidden="true">火</span>
+    <span class="b-boot__text">打开本子…</span>
+  </div>
+
+  <div class="app app-b">
+    <main class="b-book">
+      <div class="b-margin" aria-hidden="true"></div>
+
+      <!-- 封面 + 日期 -->
+      <header class="b-cover" id="b-today">
+        <div class="b-cover__brand">
+          <div class="vs-seal" aria-hidden="true"><span>火</span><span>山</span><span>严</span><span>选</span></div>
+          <div class="b-cover__titles">
+            <span class="b-cover__book">火山严选 · 私房菜谱</span>
+            <span class="b-cover__sub">自己记的，最合自己胃口</span>
+          </div>
+          <span class="b-rel" id="b-rel">今天</span>
+        </div>
+
+        <div class="b-dateblock">
+          <span class="b-dateblock__day" id="b-day">7</span>
+          <div class="b-dateblock__meta">
+            <span class="b-dateblock__month" id="b-month">11月</span>
+            <span class="b-dateblock__weekday" id="b-weekday">星期五</span>
+            <span class="b-dateblock__hint">先挑一天 ↓</span>
+          </div>
+        </div>
+        <svg class="b-squiggle" viewBox="0 0 150 10" aria-hidden="true" focusable="false">
+          <path d="M2 6 Q 12 1 22 6 T 42 6 T 62 6 T 82 6 T 102 6 T 122 6 T 146 6" fill="none" stroke="rgba(51,86,107,.5)" stroke-width="1.2" stroke-linecap="round"></path>
+        </svg>
+
+        <div class="b-dates" id="b-dates"></div>
+        <div class="b-banner is-hidden" id="b-banner"></div>
+      </header>
+
+      <!-- 今日餐单 -->
+      <section class="b-section" aria-labelledby="b-plan-title">
+        <div class="b-secthead">
+          <h2 id="b-plan-title">今日餐单</h2>
+          <span class="b-secthead__note" id="b-plan-note">想吃哪一餐就点哪一行</span>
+        </div>
+        <div class="b-menu" id="b-menu"></div>
+        <div class="b-planfoot" id="b-planfoot"></div>
+      </section>
+
+      <div class="b-divider" aria-hidden="true"><span class="vs-tape"></span></div>
+
+      <!-- 转盘 -->
+      <section class="b-section" id="b-wheel" aria-labelledby="b-wheel-title">
+        <div class="b-secthead">
+          <h2 id="b-wheel-title">转一转</h2>
+          <span class="b-secthead__note">不想选的时候</span>
+        </div>
+        <div class="b-wheelwrap">
+          <span class="vs-tape b-wheelwrap__tape" aria-hidden="true"></span>
+          <div id="b-wheel-canvas"></div>
+        </div>
+        <div class="vs-chiprow b-wheel-filters" id="b-wheel-filters" aria-label="转盘候选范围"></div>
+        <label class="b-switch">
+          <input type="checkbox" id="b-avoid">
+          <span class="b-switch__box" aria-hidden="true"></span>
+          <span>避开今天已经点过的菜</span>
+        </label>
+        <div class="b-wheelcand" id="b-wheel-cand"></div>
+      </section>
+
+      <div class="b-divider" aria-hidden="true"><span class="vs-tape"></span></div>
+
+      <!-- 菜谱索引 -->
+      <section class="b-section" id="b-recipes" aria-labelledby="b-recipes-title">
+        <div class="b-secthead">
+          <h2 id="b-recipes-title">菜谱索引</h2>
+          <button class="b-write" id="b-write" type="button">✎ 写一道</button>
+        </div>
+        <input class="b-search" id="b-search" type="search" placeholder="找菜名，也可以搜食材" autocomplete="off" aria-label="搜索菜谱">
+        <div class="vs-chiprow b-filters" id="b-filters" aria-label="按时段筛选"></div>
+        <div class="b-scrap" id="b-grid"></div>
+      </section>
+
+      <div class="b-divider" aria-hidden="true"><span class="vs-tape"></span></div>
+
+      <!-- 月历 -->
+      <section class="b-section" id="b-calendar-sec" aria-labelledby="b-cal-title">
+        <div class="b-secthead">
+          <h2 id="b-cal-title">月历页</h2>
+          <span class="b-secthead__note">有红点的日子都开过火</span>
+        </div>
+        <div class="b-calpaper">
+          <span class="vs-tape b-calpaper__tape" aria-hidden="true"></span>
+          <div id="b-calendar"></div>
+        </div>
+        <div class="b-daypanel" id="b-daypanel"></div>
+      </section>
+
+      <footer class="b-footer">
+        <p>火山严选 · 自己记的菜谱，最合自己胃口。</p>
+        <div class="b-footdata">
+          <button class="b-footdata__btn" id="b-export" type="button">导出备份</button>
+          <button class="b-footdata__btn" id="b-import" type="button">导入恢复</button>
+          <input class="vs-file-input" id="b-import-file" type="file" accept="application/json,.json">
+        </div>
+        <p class="b-footdata__hint" id="b-storage-hint"></p>
+      </footer>
+    </main>
+
+    <nav class="b-dock" aria-label="页面索引">
+      <button class="b-dock__btn is-active" type="button" data-target="b-today">
+        <span class="b-dock__glyph">单</span>
+        <span>餐单</span>
+      </button>
+      <button class="b-dock__btn" type="button" data-target="b-wheel">
+        <span class="b-dock__glyph">转</span>
+        <span>转盘</span>
+      </button>
+      <button class="b-dock__btn" type="button" data-target="b-recipes">
+        <span class="b-dock__glyph">谱</span>
+        <span>菜谱</span>
+      </button>
+      <button class="b-dock__btn" type="button" data-target="b-calendar-sec">
+        <span class="b-dock__glyph">历</span>
+        <span>日历</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="../shared/store.js"></script>
+  <script src="../shared/data.js"></script>
+  <script src="../shared/wheel.js"></script>
+  <script src="../shared/kit.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>
