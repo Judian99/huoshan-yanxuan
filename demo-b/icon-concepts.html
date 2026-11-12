@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火山严选 · 图标方案 2A / 2B 效果图</title>
+<style>
+  :root{
+    --red:#a9342a;
+    --paper:#f6eedc;
+    --ink:#3d2f24;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:#e9e2d4;color:var(--ink);padding:32px 20px 64px;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:24px;letter-spacing:1px;margin-bottom:6px}
+  .sub{color:#7a6a58;font-size:13px;margin-bottom:32px;line-height:1.7}
+  h2{font-size:17px;margin:36px 0 14px;padding-left:10px;border-left:4px solid var(--red)}
+
+  /* ---------- 纹理 ---------- */
+  .paper-tex{
+    background-color:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg,rgba(120,90,60,.05) 0 1px,transparent 1px 26px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.34 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .grain-tex{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.95 0 0 0 0 0.85 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- 图标母版 ---------- */
+  .icon{position:relative;width:240px;height:240px;border-radius:54px;overflow:hidden;flex:none}
+  .icon .grain{position:absolute;inset:0;opacity:.5;mix-blend-mode:multiply;z-index:3;pointer-events:none}
+  .mark{position:absolute;inset:0;display:grid;place-items:center;z-index:2}
+  .mark svg{width:188px;height:188px;display:block}
+  #flame rect{fill:currentColor}
+
+  /* 2A：纸封朱窗（米纸底 + 红印章） */
+  .icon.a .seal{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:196px;height:196px;border-radius:30px;
+    background:
+      radial-gradient(circle at 32% 28%,rgba(255,255,255,.10),transparent 55%),
+      var(--red);
+    box-shadow:0 10px 22px rgba(90,30,22,.28),inset 0 0 0 2px rgba(246,238,220,.16);
+    display:grid;place-items:center;z-index:1;
+  }
+  .icon.a .seal::after{
+    content:"";position:absolute;inset:0;border-radius:30px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.10 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:screen;opacity:.5;pointer-events:none;
+  }
+
+  /* 2B：朱印纸窗（满版朱红） */
+  .icon.b{
+    background:
+      radial-gradient(circle at 30% 24%,rgba(255,255,255,.12),transparent 58%),
+      radial-gradient(circle at 78% 84%,rgba(0,0,0,.14),transparent 60%),
+      var(--red);
+  }
+
+  /* ---------- 母版卡片 ---------- */
+  .hero-grid{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start}
+  .hero-card{background:#fffdf7;border-radius:18px;padding:26px 26px 22px;box-shadow:0 8px 26px rgba(80,60,40,.10)}
+  .hero-card h3{font-size:16px;margin-bottom:4px}
+  .hero-card .tag{font-size:12px;color:#9a8871;margin-bottom:18px;line-height:1.6}
+  .swatches{display:flex;gap:8px;margin-top:16px}
+  .swatches span{font-size:11px;color:#fff;padding:4px 9px;border-radius:20px}
+
+  /* ---------- 桌面场景 ---------- */
+  .phones{display:flex;gap:28px;flex-wrap:wrap}
+  .phone{
+    flex:none;width:350px;border-radius:42px;padding:14px 18px 24px;
+    box-shadow:0 18px 40px rgba(50,38,26,.25);
+  }
+  .phone.light{background:linear-gradient(160deg,#dfe7f2,#f4ede0 55%,#e7d8c2)}
+  .phone.dark{background:linear-gradient(160deg,#1b2233,#3a2c3f 55%,#241a1c)}
+  .statusbar{display:flex;justify-content:space-between;font-size:12px;font-weight:600;padding:6px 10px 14px;opacity:.85}
+  .phone.dark .statusbar{color:#fff}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 10px;justify-items:center}
+  .tile{display:flex;flex-direction:column;align-items:center;gap:7px;width:66px}
+  .tile .ic{width:60px;height:60px;border-radius:14px;overflow:hidden;position:relative;background:#ddd2bd}
+  .tile label{font-size:11px;line-height:1}
+  .phone.light .tile label{color:#2c2620}
+  .phone.dark .tile label{color:#f3ede4}
+  .ic .icon{position:absolute;top:0;left:0;transform:scale(.25);transform-origin:top left}
+  .dummy{display:grid;place-items:center;font-size:22px;color:rgba(255,255,255,.92);width:100%;height:100%}
+  .d1{background:linear-gradient(135deg,#7ea7d8,#4d76ab)}.d2{background:linear-gradient(135deg,#e0a46b,#c2693f)}
+  .d3{background:linear-gradient(135deg,#8fbf8b,#558a57)}.d4{background:linear-gradient(135deg,#b58cc9,#7d5596)}
+  .d5{background:linear-gradient(135deg,#e2d08a,#c9a94e)}.d6{background:linear-gradient(135deg,#79c7c9,#3f9294)}
+  /* 现行旧版图标 */
+  .ic.old .ph{position:absolute;inset:0;background:var(--red);display:grid;place-items:center}
+  .ic.old .ph::before{content:"";width:38px;height:38px;border:2.5px solid var(--paper);border-radius:50%;display:block}
+  .ic.old .ph::after{content:"";position:absolute;width:14px;height:20px;background:var(--paper);clip-path:polygon(50% 0,78% 34%,92% 60%,74% 92%,50% 100%,26% 92%,8% 60%,22% 34%)}
+
+  /* ---------- maskable ---------- */
+  .mask-row{display:flex;gap:32px;flex-wrap:wrap}
+  .mask-card{background:#fffdf7;border-radius:18px;padding:22px;box-shadow:0 8px 26px rgba(80,60,40,.10);text-align:center}
+  .crop{width:180px;height:180px;position:relative;margin:0 auto 12px}
+  .crop .icon{transform:scale(.75);transform-origin:top left;border-radius:0}
+  .crop.circle{border-radius:50%;overflow:hidden}
+  .crop.squircle{border-radius:40px;overflow:hidden}
+  .crop .safe{position:absolute;left:10%;top:10%;width:80%;height:80%;border-radius:50%;border:2px dashed rgba(60,120,220,.85);z-index:5;pointer-events:none}
+  .mask-card p{font-size:12px;color:#9a8871}
+
+  /* ---------- 小尺寸阶梯 ---------- */
+  .ladder{display:flex;gap:26px;align-items:flex-end;flex-wrap:wrap;background:#fffdf7;border-radius:18px;padding:24px;box-shadow:0 8px 26px rgba(80,60,40,.10)}
+  .lad{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .lad .ic{position:relative;overflow:hidden}
+  .lad span{font-size:11px;color:#9a8871}
+  .note{font-size:12px;color:#8a7862;line-height:1.8;margin-top:14px}
+  .note b{color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>火山严选 · 手帐食谱本 — 图标方案效果图</h1>
+  <p class="sub">
+    设计语言：网易严选「外圆内方 · 等粗几何 · 红白克制」× 手帐食谱本「米纸封面 · 朱红印章 · 火苗」。<br>
+    外圆内方框内是一枚流畅火苗剪影（主火尖居中、左下带次级火舌），几何全部代码精确绘制，AI 仅生成纸张/印泥质感；满版不透明，图形位于中心 80% maskable 安全区。
+  </p>
+
+  <!-- SVG 母版定义：A/B 复用，currentColor 跟随父级 -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <!-- 流畅火苗剪影：主火尖居中、左下带次级火舌，经典 fire 轮廓 -->
+      <symbol id="flame" viewBox="0 0 64 78">
+        <path fill="currentColor" d="
+          M32 2
+          C37.5 13.5 52 22.5 54 40.5
+          C55.3 53 47 63.5 36 67
+          C43.5 60 41.5 51 34 44
+          C27 53 14.5 53 12.5 65.5
+          C5.5 58.5 3.5 47.5 9 36.5
+          C13.5 27 25 22.5 28.5 11.5
+          C30 7 31 4 32 2 Z"/>
+      </symbol>
+      <!-- 完整标识：外环 + 内方窗 + 火苗 -->
+      <symbol id="mark" viewBox="0 0 188 188">
+        <circle cx="94" cy="94" r="86" fill="none" stroke="currentColor" stroke-width="9"/>
+        <rect x="46" y="46" width="96" height="96" rx="10" fill="none" stroke="currentColor" stroke-width="9"/>
+        <!-- 火苗置于方框内，约 62×76，居中 -->
+        <svg x="63" y="58" width="62" height="76"><use href="#flame" x="0" y="0" width="64" height="78"/></svg>
+      </symbol>
+      <!-- 精简标识：仅外环 + 火苗（去掉内方框，小尺寸更清晰） -->
+      <symbol id="mark-simple" viewBox="0 0 188 188">
+        <circle cx="94" cy="94" r="86" fill="none" stroke="currentColor" stroke-width="9"/>
+        <svg x="57" y="52" width="74" height="90"><use href="#flame" x="0" y="0" width="64" height="78"/></svg>
+      </symbol>
+    </defs>
+  </svg>
+
+  <h2>一、母版对比（240px）</h2>
+  <div class="hero-grid">
+    <div class="hero-card">
+      <h3>2A · 纸封朱窗</h3>
+      <p class="tag">满版米纸封面 + 方形朱红印章，章内米白外圆内方火印<br>差异化最强、手帐感最足</p>
+      <div class="icon a paper-tex">
+        <div class="seal"></div>
+        <div class="mark" style="color:var(--paper)"><svg><use href="#mark"/></svg></div>
+        <div class="grain grain-tex"></div>
+      </div>
+      <div class="swatches"><span style="background:#f6eedc;color:#6b5840">纸 #f6eedc</span><span style="background:#a9342a">朱 #a9342a</span></div>
+    </div>
+
+    <div class="hero-card">
+      <h3>2B · 朱印纸窗</h3>
+      <p class="tag">满版朱红 + 米白纸色外圆内方火印，纸纹藏于图形<br>最醒目、小尺寸剪影最强、严选家族感</p>
+      <div class="icon b">
+        <div class="mark" style="color:var(--paper)"><svg><use href="#mark"/></svg></div>
+        <div class="grain grain-tex"></div>
+      </div>
+      <div class="swatches"><span style="background:#a9342a">朱 #a9342a</span><span style="background:#f6eedc;color:#6b5840">纸 #f6eedc</span></div>
+    </div>
+  </div>
+
+  <h2>二、iPhone 桌面场景（60px 实标，含现行旧图标对照）</h2>
+  <div class="phones">
+    <div class="phone light">
+      <div class="statusbar"><span>9:41</span><span>●●● 5G ▮</span></div>
+      <div class="grid4" id="grid-light"></div>
+    </div>
+    <div class="phone dark">
+      <div class="statusbar"><span>9:41</span><span>●●● 5G ▮</span></div>
+      <div class="grid4" id="grid-dark"></div>
+    </div>
+  </div>
+  <p class="note">观察重点：<b>2A</b> 靠浅底在彩色图标群里"透气"，红印章是视觉锚点；<b>2B</b> 与微信/淘宝同属重色阵营，靠米白几何火印区分；旧版透明角在桌面上会被系统裁成黑底/毛边。</p>
+
+  <h2>三、Android maskable 裁剪与安全区（蓝圈 = 中心 80% 安全区）</h2>
+  <div class="mask-row" id="mask-row"></div>
+
+  <h2>四、小尺寸识别阶梯（模拟 Dock / 通知 / 老设备）</h2>
+  <div class="ladder" id="ladder"></div>
+  <p class="note">判定标准：40px 时外环、方框、火舌尖三层结构仍可辨；若三层过糊，生产版可在最小尺寸切换为「外环 + 火苗」两层精简标识（已预留 mark-simple）。</p>
+</div>
+
+<script>
+function markHTML(variant){
+  const seal = variant === 'a' ? '<div class="seal"></div>' : '';
+  const tex = variant === 'a' ? 'paper-tex' : '';
+  return '<div class="icon ' + variant + ' ' + tex + '" style="position:absolute">' +
+    seal +
+    '<div class="mark" style="color:var(--paper)"><svg><use href="#mark"/></svg></div>' +
+    '<div class="grain grain-tex"></div></div>';
+}
+function tile(variant, label){
+  return '<div class="tile"><div class="ic">' + markHTML(variant) + '</div><label>' + label + '</label></div>';
+}
+function dummy(cls, t){
+  return '<div class="tile"><div class="ic"><div class="dummy ' + cls + '">' + t + '</div></div><label>' +
+    ({微:'微信',淘:'淘宝',书:'读书',音:'音乐',日:'日历',备:'备忘录'})[t] + '</label></div>';
+}
+function oldTile(){
+  return '<div class="tile"><div class="ic old"><div class="ph"></div></div><label>现行旧版</label></div>';
+}
+const lightIcons = [tile('a','火山严选'), tile('b','火山严选'), oldTile(), dummy('d1','微'),
+                    dummy('d2','淘'), dummy('d3','书'), dummy('d4','音'), dummy('d5','日')];
+const darkIcons  = [tile('a','火山严选'), tile('b','火山严选'), oldTile(), dummy('d1','微'),
+                    dummy('d2','淘'), dummy('d3','书'), dummy('d4','音'), dummy('d6','备')];
+document.getElementById('grid-light').innerHTML = lightIcons.join('');
+document.getElementById('grid-dark').innerHTML = darkIcons.join('');
+
+// maskable
+const masks = [['a','circle','2A · 圆形裁剪'],['b','circle','2B · 圆形裁剪'],
+               ['a','squircle','2A · 方角裁剪'],['b','squircle','2B · 方角裁剪']];
+document.getElementById('mask-row').innerHTML = masks.map(([v, shape, cap]) =>
+  '<div class="mask-card"><div class="crop ' + shape + '">' + markHTML(v) + '<div class="safe"></div></div><p>' + cap + '</p></div>'
+).join('');
+
+// 小尺寸阶梯
+const ladder = document.getElementById('ladder');
+[80, 60, 48, 40].forEach(px => {
+  ['a','b'].forEach(v => {
+    const cell = document.createElement('div');
+    cell.className = 'lad';
+    cell.innerHTML =
+      '<div class="ic" style="width:' + px + 'px;height:' + px + 'px;border-radius:' + Math.round(px * 0.225) + 'px">' +
+        '<div style="transform:scale(' + (px / 240) + ');transform-origin:top left;width:240px;height:240px">' + markHTML(v) + '</div>' +
+      '</div><span>' + (v === 'a' ? '2A' : '2B') + ' · ' + px + 'px</span>';
+    ladder.appendChild(cell);
+  });
+});
+</script>
+</body>
+</html>
