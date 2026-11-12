@@ -332,7 +332,11 @@
     clear(refs.wheelCand);
     if (!state.wheelItems.length) {
       refs.wheelCand.appendChild(
-        document.createTextNode("这一组暂时没有菜，换个时段，或者关掉「避开今天」看看。")
+        document.createTextNode(
+          VS.recipes.length
+            ? "这一组暂时没有菜，换个时段，或者关掉「避开今天」看看。"
+            : "菜谱本还是空的，先去下面「菜谱索引」写一道，再回来转。"
+        )
       );
       return;
     }
@@ -460,8 +464,15 @@
     var recipes = filteredRecipes();
 
     if (!recipes.length) {
-      var empty = el("div", "vs-empty", "没有找到这道菜。");
-      empty.appendChild(el("small", null, "换个词，或者点「写一道」加进来。"));
+      var noRecipesAtAll = VS.recipes.length === 0;
+      var empty = el(
+        "div",
+        "vs-empty",
+        noRecipesAtAll ? "菜谱本还是空的。" : "没有找到这道菜。"
+      );
+      empty.appendChild(
+        el("small", null, noRecipesAtAll ? "点右上角「写一道」，记下你的第一道菜。" : "换个词，或者点「写一道」加进来。")
+      );
       empty.style.gridColumn = "1 / -1";
       refs.grid.appendChild(empty);
       return;
