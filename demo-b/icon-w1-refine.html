@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火山严选 · W1 朱印宋体 精修变体</title>
+<style>
+  /* 思源宋体 700/900（OFL-1.1），按分片 + unicode-range 加载 */
+  @font-face{font-family:"NS7";src:url("fonts/noto-serif-sc-114-700-normal.woff2") format("woff2");unicode-range:U+4E25;font-display:swap}
+  @font-face{font-family:"NS7";src:url("fonts/noto-serif-sc-116-700-normal.woff2") format("woff2");unicode-range:U+706B,U+5C71;font-display:swap}
+  @font-face{font-family:"NS7";src:url("fonts/noto-serif-sc-117-700-normal.woff2") format("woff2");unicode-range:U+9009;font-display:swap}
+  @font-face{font-family:"NS9";src:url("fonts/noto-serif-sc-114-900-normal.woff2") format("woff2");unicode-range:U+4E25;font-display:swap}
+  @font-face{font-family:"NS9";src:url("fonts/noto-serif-sc-116-900-normal.woff2") format("woff2");unicode-range:U+706B,U+5C71;font-display:swap}
+  @font-face{font-family:"NS9";src:url("fonts/noto-serif-sc-117-900-normal.woff2") format("woff2");unicode-range:U+9009;font-display:swap}
+
+  :root{--red:#a9342a;--red-deep:#8f2a21;--paper:#f6eedc;--ink:#3d2f24}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#e9e2d4;color:var(--ink);padding:32px 20px 64px}
+  .wrap{max-width:1120px;margin:0 auto}
+  h1{font-size:23px;margin-bottom:6px}
+  .sub{color:#7a6a58;font-size:13px;line-height:1.7;margin-bottom:28px}
+  h2{font-size:17px;margin:34px 0 14px;padding-left:10px;border-left:4px solid var(--red)}
+
+  /* 印泥微噪点（仅 R4 用，极克制） */
+  .seal-grain{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.14' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- 图标 ---------- */
+  .icon{position:relative;width:220px;height:220px;border-radius:50px;overflow:hidden;flex:none;
+    background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.10),transparent 56%),
+               radial-gradient(circle at 80% 88%,rgba(0,0,0,.12),transparent 60%),var(--red);
+    display:grid;place-items:center}
+  .icon .grain{position:absolute;inset:0;mix-blend-mode:screen;opacity:.6;pointer-events:none}
+  .chars{position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+    width:100%;height:100%;padding:26px;gap:2px;color:var(--paper)}
+  .chars span{display:grid;place-items:center;line-height:1;font-family:"NS7",serif;font-weight:700}
+  .v900 .chars span{font-family:"NS9",serif;font-weight:900}
+  /* 字块占格比例 */
+  .v1 .chars span,.v4 .chars span{font-size:78px}
+  .v2 .chars span{font-size:74px}
+  .v3 .chars span{font-size:82px}
+  /* 内框 */
+  .frame::before{content:"";position:absolute;inset:20px;border:2.5px solid rgba(246,238,220,.55);border-radius:16px;pointer-events:none}
+  .frame .chars{padding:34px}
+  .frame .chars span{font-size:66px}
+  .v900.frame .chars span{font-size:70px}
+
+  /* 变体卡片 */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .card{background:#fffdf7;border-radius:16px;padding:18px 16px;box-shadow:0 8px 24px rgba(80,60,40,.10)}
+  .card .icon{margin:0 auto 14px;width:100%;height:auto;aspect-ratio:1/1;border-radius:24px}
+  .card h3{font-size:14px;margin-bottom:4px}
+  .card p{font-size:11.5px;color:#9a8871;line-height:1.6;min-height:52px}
+  .pick{display:inline-block;margin-top:8px;font-size:11px;color:var(--red);border:1px solid var(--red);border-radius:20px;padding:2px 10px}
+
+  /* ---------- 桌面 ---------- */
+  .phones{display:flex;gap:28px;flex-wrap:wrap}
+  .phone{flex:none;width:360px;border-radius:40px;padding:14px 18px 22px;box-shadow:0 18px 40px rgba(50,38,26,.25)}
+  .phone.light{background:linear-gradient(160deg,#dfe7f2,#f4ede0 55%,#e7d8c2)}
+  .phone.dark{background:linear-gradient(160deg,#1b2233,#3a2c3f 55%,#241a1c)}
+  .statusbar{display:flex;justify-content:space-between;font-size:12px;font-weight:600;padding:6px 10px 12px;opacity:.85}
+  .phone.dark .statusbar{color:#fff}
+  .gridp{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 10px;justify-items:center}
+  .tile{display:flex;flex-direction:column;align-items:center;gap:6px;width:68px}
+  .tile .ic{width:60px;height:60px;border-radius:14px;overflow:hidden;position:relative}
+  .tile label{font-size:10.5px}.phone.light label{color:#2c2620}.phone.dark label{color:#f3ede4}
+  .ic .icon{position:absolute;top:0;left:0;transform:scale(.2727);transform-origin:top left;border-radius:14px}
+  .dummy{display:grid;place-items:center;font-size:20px;color:#fff;width:100%;height:100%}
+  .d1{background:linear-gradient(135deg,#7ea7d8,#4d76ab)}.d2{background:linear-gradient(135deg,#e0a46b,#c2693f)}
+  .d3{background:linear-gradient(135deg,#8fbf8b,#558a57)}.d4{background:linear-gradient(135deg,#b58cc9,#7d5596)}
+
+  /* ---------- 小尺寸阶梯 ---------- */
+  .ladder{background:#fffdf7;border-radius:18px;padding:24px;box-shadow:0 8px 26px rgba(80,60,40,.10)}
+  .lad-group{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:20px}
+  .lad-group:last-child{margin-bottom:0}
+  .lad-title{font-size:13px;font-weight:700;color:var(--red);margin-bottom:10px;width:100%}
+  .lad-cells{display:flex;gap:20px;align-items:flex-end}
+  .lad{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .lad .ic{position:relative;overflow:hidden}
+  .lad span{font-size:11px;color:#9a8871}
+  .note{font-size:12px;color:#8a7862;line-height:1.8;margin-top:14px}
+  .note b{color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>W1 · 朱印宋体田字格 — 精修变体</h1>
+  <p class="sub">
+    全部满版朱红（无透明角）+ 米白宋体「火山严选」田字格，字形为思源宋体 OFL 真实渲染。四个变体只在 <b>字重 / 内框 / 印泥质感 / 字号字距</b> 上做差异，用于冻结最终生产稿。<br>
+    生产规格：内容收在中心 80% maskable 安全区；iOS 满版出图由系统统一裁圆角。
+  </p>
+
+  <h2>一、四个精修变体（220px 母版）</h2>
+  <div class="grid4" id="variants"></div>
+
+  <h2>二、iPhone 桌面 60px 实标（浅/深壁纸，含常见图标）</h2>
+  <div class="phones">
+    <div class="phone light"><div class="statusbar"><span>9:41</span><span>●●● 5G</span></div><div class="gridp" id="grid-light"></div></div>
+    <div class="phone dark"><div class="statusbar"><span>9:41</span><span>●●● 5G</span></div><div class="gridp" id="grid-dark"></div></div>
+  </div>
+
+  <h2>三、小尺寸阶梯（80 / 60 / 48 / 40px）</h2>
+  <div class="ladder" id="ladder"></div>
+  <p class="note"><b>冻结判据：</b>优先看 40–48px 哪个变体的红章轮廓最实、笔画最不糊；900 字重通常在小尺寸更占优，700 在大屏更雅致。</p>
+</div>
+
+<script>
+const TEXT=["火","山","严","选"];
+const V=[
+  {k:"v1",cls:"v1",t:"V1 · 700 标准",d:"无内框，700 字重，干净克制，大屏最雅致，小尺寸偏细。"},
+  {k:"v2",cls:"v2 frame",t:"V2 · 700 内框",d:"加米白细内框（印章感），字略收，仪式感最强，框会占用安全区。"},
+  {k:"v3",cls:"v3 v900",t:"V3 · 900 特粗",d:"900 字重、字号最大，笔画最实，小尺寸/远景识别最强。"},
+  {k:"v4",cls:"v4 v900",t:"V4 · 900 印泥",d:"900 字重 + 极克制印泥噪点，近看有手作温度，远看仍干净。"}
+];
+function iconHTML(cls){
+  const grain = cls.includes("v4") ? '<div class="grain seal-grain"></div>' : "";
+  return '<div class="icon '+cls+'">'+grain+
+    '<div class="chars">'+TEXT.map(c=>"<span>"+c+"</span>").join("")+'</div></div>';
+}
+document.getElementById("variants").innerHTML = V.map(v=>
+  '<div class="card">'+iconHTML(v.cls)+'<h3>'+v.t+'</h3><p>'+v.d+'</p><span class="pick">候选 '+v.k.toUpperCase()+'</span></div>').join("");
+
+function tile(cls){return '<div class="tile"><div class="ic">'+iconHTML(cls)+'</div><label>火山严选</label></div>';}
+function dummy(c,t){return '<div class="tile"><div class="ic"><div class="dummy '+c+'">'+t+'</div></div><label>应用</label></div>';}
+const row=[tile("v1"),tile("v2"),tile("v3"),tile("v4"),dummy("d1","微"),dummy("d2","淘"),dummy("d3","书"),dummy("d4","音")];
+document.getElementById("grid-light").innerHTML=row.join("");
+document.getElementById("grid-dark").innerHTML=row.join("");
+
+const ladder=document.getElementById("ladder");
+V.forEach(v=>{
+  const g=document.createElement("div");g.className="lad-group";
+  let cells="";
+  [80,60,48,40].forEach(px=>{
+    cells+='<div class="lad"><div class="ic" style="width:'+px+'px;height:'+px+'px;border-radius:'+Math.round(px*.225)+'px">'+
+      '<div style="transform:scale('+(px/220)+');transform-origin:top left;width:220px;height:220px">'+iconHTML(v.cls)+'</div></div><span>'+px+'</span></div>';
+  });
+  g.innerHTML='<div class="lad-title">'+v.t+'</div><div class="lad-cells">'+cells+"</div>";
+  ladder.appendChild(g);
+});
+</script>
+</body>
+</html>
