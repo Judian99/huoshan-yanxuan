@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图标效果预览 · 火山严选</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ece4d6; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #2b2117;
+    padding: 32px 28px 40px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .sub { color: #6b5a48; font-size: 13px; margin-bottom: 26px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: #fffdf8;
+    border: 1px solid rgba(74,55,36,.15);
+    border-radius: 14px;
+    padding: 20px 16px 18px;
+    box-shadow: 0 8px 24px rgba(60,40,20,.08);
+  }
+  .card h2 { font-size: 15px; margin-bottom: 4px; }
+  .card .cap { font-size: 11.5px; color: #8a7763; margin-bottom: 16px; line-height: 1.5; min-height: 34px; }
+
+  /* 棋盘格：不透明地暴露透明区域 */
+  .checker {
+    background-color: #f4efe6;
+    background-image:
+      linear-gradient(45deg, #d9d2c6 25%, transparent 25%),
+      linear-gradient(-45deg, #d9d2c6 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #d9d2c6 75%),
+      linear-gradient(-45deg, transparent 75%, #d9d2c6 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  }
+
+  .iphone {
+    border-radius: 26px;
+    padding: 26px 18px 22px;
+    background: linear-gradient(160deg, #4a6b8a 0%, #7a5c8f 55%, #b06a7a 100%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .ios-icon { width: 118px; height: 118px; border-radius: 26px; overflow: hidden; box-shadow: 0 6px 14px rgba(0,0,0,.25); }
+  .ios-icon img { width: 100%; height: 100%; display: block; }
+  .ios-label { color: #fff; font-size: 13px; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+
+  .android { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .android-row { display: flex; gap: 26px; }
+  .a-mask { width: 104px; height: 104px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,.18); }
+  .a-mask.circle { border-radius: 50%; }
+  .a-mask.squircle { border-radius: 22px; }
+  .a-mask img { width: 100%; height: 100%; display: block; }
+  .a-tag { font-size: 11px; color: #8a7763; text-align: center; margin-top: 6px; }
+
+  .desktop { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .win-tile { width: 104px; height: 104px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,.2); background: #fff; }
+  .win-tile img { width: 100%; height: 100%; display: block; }
+  .desk-label { font-size: 12.5px; color: #4a3c2d; }
+
+  .raw { margin-top: 26px; background: #fffdf8; border: 1px solid rgba(74,55,36,.15); border-radius: 14px; padding: 20px; }
+  .raw h2 { font-size: 15px; margin-bottom: 14px; }
+  .raw-row { display: flex; gap: 28px; align-items: flex-end; flex-wrap: wrap; }
+  .raw-item { text-align: center; }
+  .raw-box { border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+  .raw-box img { display: block; }
+  .raw-item .meta { font-size: 11.5px; color: #8a7763; line-height: 1.6; }
+  .note { margin-top: 22px; padding: 14px 16px; border-left: 3px solid #a9342a; background: rgba(169,52,42,.06); font-size: 12.5px; line-height: 1.8; color: #5a4938; }
+</style>
+</head>
+<body>
+  <h1>「火山严选」桌面图标 · 实际效果预览</h1>
+  <p class="sub">棋盘格与壁纸处即图标 PNG 的透明区域——保存到桌面后，这些位置会透出壁纸或底色。</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>① iPhone 主屏幕</h2>
+      <p class="cap">iOS 对图标套圆角蒙版，但 PNG 透明四角仍会露出壁纸</p>
+      <div class="iphone">
+        <div class="ios-icon"><img src="icons/icon-180.png" alt="iOS 图标"></div>
+        <div class="ios-label">火山严选</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>② 安卓自适应图标</h2>
+      <p class="cap">系统按圆形 / 圆角方形蒙版裁切，透明背景缺少满版底色</p>
+      <div class="android">
+        <div class="android-row">
+          <div>
+            <div class="a-mask circle checker"><img src="icons/icon-512.png" alt="圆形蒙版"></div>
+            <p class="a-tag">圆形蒙版</p>
+          </div>
+          <div>
+            <div class="a-mask squircle checker"><img src="icons/icon-512.png" alt="圆角方形蒙版"></div>
+            <p class="a-tag">圆角方形</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>③ 桌面 Chrome / Edge</h2>
+      <p class="cap">安装为桌面应用后，任务栏与开始菜单中的方形图标</p>
+      <div class="desktop">
+        <div class="win-tile checker"><img src="icons/icon-192.png" alt="桌面图标"></div>
+        <div class="desk-label">火山严选 · 手帐食谱本</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="raw">
+    <h2>原始 PNG 文件（棋盘格 = 透明像素）</h2>
+    <div class="raw-row">
+      <div class="raw-item">
+        <div class="raw-box checker" style="width:60px;height:60px;"><img src="icons/icon-180.png" width="60" height="60"></div>
+        <p class="meta">icon-180.png<br>180×180 · iPhone 用</p>
+      </div>
+      <div class="raw-item">
+        <div class="raw-box checker" style="width:64px;height:64px;"><img src="icons/icon-192.png" width="64" height="64"></div>
+        <p class="meta">icon-192.png<br>192×192 · 安卓/桌面</p>
+      </div>
+      <div class="raw-item">
+        <div class="raw-box checker" style="width:128px;height:128px;"><img src="icons/icon-512.png" width="128" height="128"></div>
+        <p class="meta">icon-512.png<br>512×512 · 高清/maskable</p>
+      </div>
+    </div>
+    <div class="note">
+      <strong>当前效果要点：</strong>红印章四周是透明的，因此在手机桌面会「浮」在壁纸上、四角透空，而不是满版红色方块；安卓 maskable 蒙版下四周也可能留白。<br>
+      <strong>可选优化：</strong>重新生成满版不透明红底、火焰内缩到安全区的一套图标，各平台都会显示为规整的红色 App 方块。
+    </div>
+  </div>
+</body>
+</html>
