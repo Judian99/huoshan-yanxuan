@@ -10,3 +10,6 @@ Thumbs.db
 node_modules/
 .npm/
 .vstest/
+
+# 本地工具与 GitHub 凭证（严禁提交）
+.tools/
