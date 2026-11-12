@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>火山严选 · 四字文字图标效果图</title>
+<style>
+  /* 思源宋体/黑体（OFL-1.1）。每个分片一条 @font-face 并带 unicode-range，
+     浏览器按字符自动选片：114=严 U+4E25，116=火/山 U+706B/U+5C71，117=选 U+9009 */
+  @font-face{font-family:"Noto Serif SC";font-weight:700;font-style:normal;font-display:swap;
+    src:url("fonts/noto-serif-sc-114-700-normal.woff2") format("woff2");unicode-range:U+4E25}
+  @font-face{font-family:"Noto Serif SC";font-weight:700;font-style:normal;font-display:swap;
+    src:url("fonts/noto-serif-sc-116-700-normal.woff2") format("woff2");unicode-range:U+706B,U+5C71}
+  @font-face{font-family:"Noto Serif SC";font-weight:700;font-style:normal;font-display:swap;
+    src:url("fonts/noto-serif-sc-117-700-normal.woff2") format("woff2");unicode-range:U+9009}
+  @font-face{font-family:"Noto Sans SC";font-weight:700;font-style:normal;font-display:swap;
+    src:url("fonts/noto-sans-sc-114-700-normal.woff2") format("woff2");unicode-range:U+4E25}
+  @font-face{font-family:"Noto Sans SC";font-weight:700;font-style:normal;font-display:swap;
+    src:url("fonts/noto-sans-sc-116-700-normal.woff2") format("woff2");unicode-range:U+706B,U+5C71}
+  @font-face{font-family:"Noto Sans SC";font-weight:700;font-style:normal;font-display:swap;
+    src:url("fonts/noto-sans-sc-117-700-normal.woff2") format("woff2");unicode-range:U+9009}
+  :root{--red:#a9342a;--red-deep:#8f2a21;--paper:#f6eedc;--ink:#3d2f24}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:#e9e2d4;color:var(--ink);padding:32px 20px 64px}
+  .wrap{max-width:1120px;margin:0 auto}
+  h1{font-size:24px;margin-bottom:6px;font-weight:700}
+  .sub{color:#7a6a58;font-size:13px;line-height:1.7;margin-bottom:30px}
+  h2{font-size:17px;margin:34px 0 14px;padding-left:10px;border-left:4px solid var(--red)}
+
+  .paper-tex{background-color:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg,rgba(120,90,60,.05) 0 1px,transparent 1px 26px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.34 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- 图标母版 ---------- */
+  .icon{position:relative;width:240px;height:240px;border-radius:54px;overflow:hidden;flex:none;
+    display:grid;place-items:center}
+  .icon.red{background:
+    radial-gradient(circle at 30% 24%,rgba(255,255,255,.12),transparent 58%),
+    radial-gradient(circle at 78% 84%,rgba(0,0,0,.14),transparent 60%),var(--red)}
+  .icon.paper{background:var(--paper)}
+  .chars{display:grid;width:100%;height:100%;padding:30px;gap:6px}
+  .chars.t2{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}      /* 田字格 */
+  .chars.t1{grid-template-columns:repeat(4,1fr);grid-template-rows:1fr}   /* 一字横排 */
+  .chars span{display:grid;place-items:center;line-height:1;font-weight:700;user-select:none}
+
+  /* W1 朱印宋体 · 田字格 */
+  .w1 .chars{font-family:"Noto Serif SC",serif;color:var(--paper)}
+  .w1 .chars span{font-size:84px;text-shadow:0 2px 0 rgba(0,0,0,.12)}
+  /* W2 现代黑体 · 一字横排（4 列均分，字号受列宽约束避免溢出） */
+  .w2 .chars{font-family:"Noto Sans SC",sans-serif;color:var(--paper);padding:0 14px;gap:0}
+  .w2 .chars span{font-size:46px;letter-spacing:0}
+  /* W3 纸本墨书 · 田字格红印 */
+  .w3 .inner-seal{width:184px;height:184px;border-radius:26px;background:var(--red);
+    display:grid;place-items:center;box-shadow:0 10px 22px rgba(90,30,22,.28),inset 0 0 0 2px rgba(246,238,220,.16)}
+  .w3 .chars{padding:16px;gap:4px;width:100%;height:100%;font-family:"Noto Serif SC",serif;color:var(--paper)}
+  .w3 .chars span{font-size:66px}
+
+  /* 卡片 */
+  .hero-grid{display:flex;gap:28px;flex-wrap:wrap}
+  .hero-card{background:#fffdf7;border-radius:18px;padding:24px 24px 20px;box-shadow:0 8px 26px rgba(80,60,40,.10);width:300px}
+  .hero-card h3{font-size:16px;margin-bottom:4px}
+  .hero-card .tag{font-size:12px;color:#9a8871;line-height:1.6;margin-bottom:16px;min-height:52px}
+  .hero-card .icon{margin:0 auto}
+  .font-note{font-size:11px;color:#a9987f;margin-top:14px;line-height:1.6}
+
+  /* ---------- 桌面 ---------- */
+  .phones{display:flex;gap:28px;flex-wrap:wrap}
+  .phone{flex:none;width:360px;border-radius:42px;padding:14px 18px 24px;box-shadow:0 18px 40px rgba(50,38,26,.25)}
+  .phone.light{background:linear-gradient(160deg,#dfe7f2,#f4ede0 55%,#e7d8c2)}
+  .phone.dark{background:linear-gradient(160deg,#1b2233,#3a2c3f 55%,#241a1c)}
+  .statusbar{display:flex;justify-content:space-between;font-size:12px;font-weight:600;padding:6px 10px 14px;opacity:.85}
+  .phone.dark .statusbar{color:#fff}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 10px;justify-items:center}
+  .tile{display:flex;flex-direction:column;align-items:center;gap:7px;width:68px}
+  .tile .ic{width:60px;height:60px;border-radius:14px;overflow:hidden;position:relative;background:#ddd2bd}
+  .tile label{font-size:11px;line-height:1}
+  .phone.light .tile label{color:#2c2620}.phone.dark .tile label{color:#f3ede4}
+  .ic .icon{position:absolute;top:0;left:0;transform:scale(.25);transform-origin:top left}
+  .ic .icon.paper{transform:scale(.25)}
+  .dummy{display:grid;place-items:center;font-size:22px;color:rgba(255,255,255,.92);width:100%;height:100%}
+  .d1{background:linear-gradient(135deg,#7ea7d8,#4d76ab)}.d2{background:linear-gradient(135deg,#e0a46b,#c2693f)}
+  .d3{background:linear-gradient(135deg,#8fbf8b,#558a57)}.d4{background:linear-gradient(135deg,#b58cc9,#7d5596)}
+  .d5{background:linear-gradient(135deg,#e2d08a,#c9a94e)}
+  .ic.old .ph{position:absolute;inset:0;background:var(--red);display:grid;place-items:center}
+  .ic.old .ph::before{content:"";width:38px;height:38px;border:2.5px solid var(--paper);border-radius:50%}
+  .ic.old .ph::after{content:"";position:absolute;width:14px;height:20px;background:var(--paper);clip-path:polygon(50% 0,78% 34%,92% 60%,74% 92%,50% 100%,26% 92%,8% 60%,22% 34%)}
+
+  /* ---------- maskable ---------- */
+  .mask-row{display:flex;gap:24px;flex-wrap:wrap}
+  .mask-card{background:#fffdf7;border-radius:18px;padding:20px;box-shadow:0 8px 26px rgba(80,60,40,.10);text-align:center}
+  .crop{width:170px;height:170px;position:relative;margin:0 auto 10px}
+  .crop .icon{transform:scale(.708);transform-origin:top left;border-radius:0}
+  .crop.circle{border-radius:50%;overflow:hidden}.crop.squircle{border-radius:38px;overflow:hidden}
+  .crop .safe{position:absolute;left:10%;top:10%;width:80%;height:80%;border-radius:50%;border:2px dashed rgba(60,120,220,.85);z-index:9;pointer-events:none}
+  .mask-card p{font-size:12px;color:#9a8871}
+
+  /* ---------- 小尺寸 ---------- */
+  .ladder{background:#fffdf7;border-radius:18px;padding:24px;box-shadow:0 8px 26px rgba(80,60,40,.10)}
+  .lad-group{display:flex;gap:30px;flex-wrap:wrap;margin-bottom:22px}
+  .lad-group:last-child{margin-bottom:0}
+  .lad-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--red)}
+  .lad-cells{display:flex;gap:22px;align-items:flex-end}
+  .lad{display:flex;flex-direction:column;align-items:center;gap:7px}
+  .lad .ic{position:relative;overflow:hidden}
+  .lad span{font-size:11px;color:#9a8871}
+  .note{font-size:12px;color:#8a7862;line-height:1.8;margin-top:14px}
+  .note b{color:var(--red)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>火山严选 · 四字文字图标（wordmark）效果图</h1>
+  <p class="sub">
+    直接以「火山严选」四字成标，字形使用开源可商用的 <b>思源宋体 / 思源黑体（OFL-1.1）</b> 真实渲染，绝不使用 AI 写汉字（避免错笔变形）。<br>
+    满版不透明、田字格/横排均收在中心 80% maskable 安全区。重点请看第四部分：<b>40px 小尺寸下的真实可读性</b>。
+  </p>
+
+  <h2>一、三种字体设计方向（240px 母版）</h2>
+  <div class="hero-grid" id="hero"></div>
+
+  <h2>二、iPhone 桌面场景（60px 实标，含现行旧版）</h2>
+  <div class="phones">
+    <div class="phone light"><div class="statusbar"><span>9:41</span><span>●●● 5G ▮</span></div><div class="grid4" id="grid-light"></div></div>
+    <div class="phone dark"><div class="statusbar"><span>9:41</span><span>●●● 5G ▮</span></div><div class="grid4" id="grid-dark"></div></div>
+  </div>
+  <p class="note">观察：田字格（W1/W3）在 60px 下仍是清晰的"红章"，单字开始变小；横排（W2）四字更挤。请结合第四部分判断能否接受。</p>
+
+  <h2>三、Android maskable 裁剪（蓝圈 = 中心 80% 安全区）</h2>
+  <div class="mask-row" id="mask-row"></div>
+
+  <h2>四、小尺寸可读性阶梯（最关键）</h2>
+  <div class="ladder" id="ladder"></div>
+  <p class="note">判定：<b>40px 是文字图标的生死线</b>。若四字在此已无法辨认，建议保留田字格并进一步加粗/加大，或回退到图形火印方案。</p>
+</div>
+
+<script>
+const TEXT = ["火","山","严","选"];
+
+// 三种母版的内部结构
+function inner(kind){
+  if(kind === "w1"){
+    return '<div class="icon red w1"><div class="chars t2">' +
+      TEXT.map(c=>"<span>"+c+"</span>").join("") + '</div></div>';
+  }
+  if(kind === "w2"){
+    return '<div class="icon red w2"><div class="chars t1">' +
+      TEXT.map(c=>"<span>"+c+"</span>").join("") + '</div></div>';
+  }
+  return '<div class="icon paper paper-tex w3"><div class="inner-seal"><div class="chars t2">' +
+    TEXT.map(c=>"<span>"+c+"</span>").join("") + '</div></div></div>';
+}
+
+const DIRS = [
+  {k:"w1", t:"W1 · 朱印宋体（田字格）", tag:"满版朱红 + 思源宋体粗体，传统印章读法，庄重、有匠心，和现有红印血缘最近。", note:"字体：思源宋体 700（OFL）"},
+  {k:"w2", t:"W2 · 现代黑体（一字横排）", tag:"满版朱红 + 思源黑体，现代电商感、最像成熟商业 App；但四字横排在小尺寸最挤。", note:"字体：思源黑体 700（OFL）"},
+  {k:"w3", t:"W3 · 纸本墨书（红章田字）", tag:"米纸封面 + 朱红方章，章内宋体白字，手帐感最强、差异化最高。", note:"字体：思源宋体 700（OFL）+ 纸纹"}
+];
+
+// 母版卡片
+document.getElementById("hero").innerHTML = DIRS.map(d =>
+  '<div class="hero-card"><h3>'+d.t+'</h3><p class="tag">'+d.tag+'</p>'+inner(d.k)+
+  '<p class="font-note">'+d.note+'</p></div>').join("");
+
+function tile(kind){return '<div class="tile"><div class="ic">'+inner(kind)+'</div><label>火山严选</label></div>';}
+function dummy(cls,t,name){return '<div class="tile"><div class="ic"><div class="dummy '+cls+'">'+t+'</div></div><label>'+name+'</label></div>';}
+function oldTile(){return '<div class="tile"><div class="ic old"><div class="ph"></div></div><label>现行旧版</label></div>';}
+const lightRow=[tile("w1"),tile("w2"),tile("w3"),oldTile(),dummy("d1","微","微信"),dummy("d2","淘","淘宝"),dummy("d3","书","读书"),dummy("d5","日","日历")];
+const darkRow =[tile("w1"),tile("w2"),tile("w3"),oldTile(),dummy("d1","微","微信"),dummy("d2","淘","淘宝"),dummy("d4","音","音乐"),dummy("d3","书","读书")];
+document.getElementById("grid-light").innerHTML=lightRow.join("");
+document.getElementById("grid-dark").innerHTML=darkRow.join("");
+
+// maskable：每个方向出圆形/方角
+const masks=[];
+DIRS.forEach(d=>{masks.push([d.k,"circle",d.t.split(" · ")[1]+" · 圆"]);masks.push([d.k,"squircle",d.t.split(" · ")[1]+" · 方"]);});
+document.getElementById("mask-row").innerHTML=masks.map(([k,shape,cap])=>
+  '<div class="mask-card"><div class="crop '+shape+'">'+inner(k)+'<div class="safe"></div></div><p>'+cap+'</p></div>').join("");
+
+// 小尺寸阶梯
+const ladder=document.getElementById("ladder");
+DIRS.forEach(d=>{
+  const g=document.createElement("div");g.className="lad-group";
+  let cells="";
+  [80,60,48,40].forEach(px=>{
+    cells+='<div class="lad"><div class="ic" style="width:'+px+'px;height:'+px+'px;border-radius:'+Math.round(px*.225)+'px">'+
+      '<div style="transform:scale('+(px/240)+');transform-origin:top left;width:240px;height:240px">'+inner(d.k)+'</div></div><span>'+px+'px</span></div>';
+  });
+  g.innerHTML='<div class="lad-title">'+d.t+'</div><div class="lad-cells">'+cells+"</div>";
+  ladder.appendChild(g);
+});
+</script>
+</body>
+</html>
