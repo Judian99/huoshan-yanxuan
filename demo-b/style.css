@@ -962,3 +962,22 @@ html[data-demo="b"] .vs-sheet__foot {
   line-height: 1.5;
   opacity: 0.8;
 }
+
+/* ---------- 导入确认 ---------- */
+
+.b-import-warn {
+  padding: 10px 12px;
+  border-left: 3px solid var(--seal);
+  background: rgba(169, 52, 42, 0.07);
+  color: var(--ink);
+  font-family: var(--font-hand);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.b-import-meta {
+  margin-top: 10px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.6;
+}

@@ -2,7 +2,7 @@
    预缓存应用外壳，离线可用；cache 名带版本号以便更新 */
 "use strict";
 
-var CACHE = "vs-b-v2";
+var CACHE = "vs-b-v3";
 
 var ASSETS = [
   "./",

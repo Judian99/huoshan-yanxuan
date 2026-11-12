@@ -733,20 +733,71 @@
         VS.ui.toast("当前环境不支持导入。");
         return;
       }
-      VS.store
-        .importData(reader.result)
-        .then(function () {
-          VS.ui.toast("已恢复备份。");
-        })
-        .catch(function (err) {
-          VS.ui.toast((err && err.message) || "导入失败，文件可能损坏。");
-        });
+      var summary;
+      try {
+        var parsed = JSON.parse(reader.result);
+        if (!parsed || parsed.app !== "huoshan-yanxuan" || !Array.isArray(parsed.recipes)) {
+          throw new Error("not-a-backup");
+        }
+        var planDays = parsed.plans ? Object.keys(parsed.plans).length : 0;
+        summary = { recipes: parsed.recipes.length, planDays: planDays, raw: reader.result };
+      } catch (e) {
+        VS.ui.toast("这不是有效的备份文件。");
+        return;
+      }
+      confirmImport(summary);
     };
     reader.onerror = function () {
       VS.ui.toast("读取文件失败。");
     };
     reader.readAsText(file);
   });
+
+  function confirmImport(summary) {
+    var body = document.createElement("div");
+    var p = document.createElement("p");
+    p.className = "b-import-warn";
+    p.textContent = "导入会用备份覆盖当前这台设备上的全部菜谱与餐单，此操作不可撤销。";
+    body.appendChild(p);
+    var meta = document.createElement("p");
+    meta.className = "b-import-meta";
+    meta.textContent =
+      "备份内含 " + summary.recipes + " 道菜谱、" + summary.planDays + " 天的餐单。";
+    body.appendChild(meta);
+
+    var cancel = document.createElement("button");
+    cancel.className = "vs-btn vs-btn--ghost";
+    cancel.type = "button";
+    cancel.textContent = "取消";
+    var confirmBtn = document.createElement("button");
+    confirmBtn.className = "vs-btn vs-btn--seal";
+    confirmBtn.type = "button";
+    confirmBtn.textContent = "覆盖并恢复";
+
+    VS.ui.openSheet({
+      title: "确认恢复备份？",
+      subtitle: "建议先「导出备份」保留当前数据",
+      content: body,
+      footer: [cancel, confirmBtn]
+    });
+
+    cancel.addEventListener("click", function () {
+      VS.ui.closeSheet();
+    });
+    confirmBtn.addEventListener("click", function () {
+      confirmBtn.disabled = true;
+      VS.store
+        .importData(summary.raw)
+        .then(function () {
+          VS.ui.closeSheet();
+          VS.ui.toast("已恢复备份。");
+        })
+        .catch(function (err) {
+          confirmBtn.disabled = false;
+          VS.ui.toast((err && err.message) || "导入失败，文件可能损坏。");
+        });
+    });
+  }
 
   function renderStorageHint(persisted) {
     var hint = $("b-storage-hint");
