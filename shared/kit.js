@@ -826,7 +826,7 @@
     var del = el("button", "vs-detail__danger", "删除这道菜");
     del.type = "button";
     del.addEventListener("click", function () {
-      toast("演示版暂未接入删除。");
+      confirmDeleteRecipe(recipe, options);
     });
     body.appendChild(del);
 
@@ -840,7 +840,8 @@
     var editBtn = el("button", "vs-btn vs-btn--ghost", "编辑");
     editBtn.type = "button";
     editBtn.addEventListener("click", function () {
-      toast("演示版暂未接入编辑。");
+      closeSheet();
+      ui.recipeForm({ recipe: recipe, onSave: options.onSave });
     });
 
     openSheet({
@@ -852,11 +853,66 @@
     });
   };
 
+  /* ---------- 删除菜谱确认 ---------- */
+
+  function confirmDeleteRecipe(recipe, options) {
+    var usedDays = 0;
+    Object.keys(VS.plans || {}).forEach(function (key) {
+      var plan = VS.plans[key];
+      VS.slots.forEach(function (slot) {
+        if ((plan[slot.id] || []).indexOf(recipe.id) !== -1) usedDays++;
+      });
+    });
+
+    var body = el("div");
+    var warn = el("p", "b-import-warn");
+    warn.textContent = "删除后会同时从所有餐单里摘掉这道菜，此操作可在本页面撤销。";
+    body.appendChild(warn);
+    var meta = el("p", "b-import-meta");
+    meta.textContent = usedDays
+      ? "「" + recipe.name + "」当前出现在 " + usedDays + " 个餐次中，会一并移除。"
+      : "「" + recipe.name + "」暂未排进任何餐单。";
+    body.appendChild(meta);
+
+    var cancel = el("button", "vs-btn vs-btn--ghost", "再想想");
+    cancel.type = "button";
+    var confirmBtn = el("button", "vs-btn vs-btn--seal", "确认删除");
+    confirmBtn.type = "button";
+
+    ui.openSheet({
+      title: "删除这道菜？",
+      subtitle: recipe.name,
+      content: body,
+      footer: [cancel, confirmBtn]
+    });
+
+    cancel.addEventListener("click", function () {
+      closeSheet();
+    });
+    confirmBtn.addEventListener("click", function () {
+      var snapshot = VS.deleteRecipe(recipe.id);
+      closeSheet();
+      if (!snapshot) return;
+      toast("已删除「" + recipe.name + "」。", {
+        undo: function () {
+          VS.restoreRecipe(snapshot);
+        }
+      });
+      if (typeof options.onDelete === "function") options.onDelete(recipe.id);
+    });
+  }
+
   /* ---------- 写菜谱 ---------- */
 
   ui.recipeForm = function (options) {
     options = options || {};
-    var state = { image: null, tags: [] };
+    var editing = options.recipe || null;
+    var state = {
+      image: editing && editing.image ? editing.image : null,
+      imageKey: editing && editing.imageKey ? editing.imageKey : null,
+      imageDirty: false,
+      tags: editing && editing.tags ? editing.tags.slice() : []
+    };
     var idBase = "vs-form-" + ++uid;
 
     var body = el("div", "vs-form");
@@ -892,8 +948,22 @@
     fileInput.accept = "image/*";
     photo.appendChild(fileInput);
     photoField.appendChild(photo);
-    photoField.appendChild(el("span", "vs-field__hint", "照片只在这次预览里出现，刷新就没了。"));
+    photoField.appendChild(
+      el("span", "vs-field__hint", VS.store ? "照片会压缩后存在本机，刷新也在。" : "照片只在这次预览里出现，刷新就没了。")
+    );
     body.appendChild(photoField);
+
+    function showPhotoPreview(src) {
+      clear(photo);
+      var img = el("img");
+      img.src = src;
+      img.alt = "";
+      photo.appendChild(img);
+      photo.appendChild(el("span", "vs-photo__edit", "换一张"));
+      photo.appendChild(fileInput);
+    }
+
+    if (state.image) showPhotoPreview(state.image);
 
     fileInput.addEventListener("change", function () {
       var file = fileInput.files && fileInput.files[0];
@@ -906,13 +976,8 @@
       var reader = new FileReader();
       reader.onload = function () {
         state.image = reader.result;
-        clear(photo);
-        var img = el("img");
-        img.src = state.image;
-        img.alt = "";
-        photo.appendChild(img);
-        photo.appendChild(el("span", "vs-photo__edit", "换一张"));
-        photo.appendChild(fileInput);
+        state.imageDirty = true;
+        showPhotoPreview(state.image);
       };
       reader.readAsDataURL(file);
     });
@@ -924,7 +989,8 @@
     VS.slots.forEach(function (slot) {
       var chip = el("button", "vs-chip", slot.name);
       chip.type = "button";
-      chip.setAttribute("aria-pressed", "false");
+      var on0 = state.tags.indexOf(slot.id) !== -1;
+      chip.setAttribute("aria-pressed", on0 ? "true" : "false");
       chip.addEventListener("click", function () {
         var idx = state.tags.indexOf(slot.id);
         if (idx === -1) state.tags.push(slot.id);
@@ -999,8 +1065,14 @@
       ingRows.appendChild(row);
     }
 
-    addIngredientRow();
-    addIngredientRow();
+    if (editing && editing.ingredients && editing.ingredients.length) {
+      editing.ingredients.forEach(function (ing) {
+        addIngredientRow(ing.name, ing.amount);
+      });
+    } else {
+      addIngredientRow();
+      addIngredientRow();
+    }
     addIng.addEventListener("click", function () {
       addIngredientRow();
       var rows = ingRows.querySelectorAll(".vs-row");
@@ -1042,8 +1114,14 @@
       stepRows.appendChild(row);
     }
 
-    addStepRow();
-    addStepRow();
+    if (editing && editing.steps && editing.steps.length) {
+      editing.steps.forEach(function (text) {
+        addStepRow(text);
+      });
+    } else {
+      addStepRow();
+      addStepRow();
+    }
     addStep.addEventListener("click", function () {
       addStepRow();
       var areas = stepRows.querySelectorAll("textarea");
@@ -1058,6 +1136,11 @@
     noteInput.id = idBase + "-note";
     noteInput.rows = 2;
     noteInput.placeholder = "比如：番茄要炒到出沙。";
+    if (editing) {
+      nameInput.value = editing.name || "";
+      timeInput.value = editing.minutes || "";
+      noteInput.value = editing.note || "";
+    }
     append(noteField, [noteLabel, noteInput]);
     body.appendChild(noteField);
 
@@ -1087,23 +1170,35 @@
       });
 
       var tints = ["#e6d3ae", "#e7b49c", "#c9d2ac", "#d8af8a", "#ead3b6", "#e2bc8d"];
-      return {
-        id: VS.newRecipeId(),
+      var recipe = {
+        id: editing ? editing.id : VS.newRecipeId(),
         name: nameInput.value.trim(),
-        emoji: "🍲",
-        tint: tints[Math.floor(Math.random() * tints.length)],
+        emoji: editing ? editing.emoji : "🍲",
+        tint: editing ? editing.tint : tints[Math.floor(Math.random() * tints.length)],
         minutes: Math.max(1, parseInt(timeInput.value, 10) || 20),
         tags: state.tags.slice(),
         note: noteInput.value.trim(),
         ingredients: ingredients.length ? ingredients : [{ name: "食材", amount: "适量" }],
         steps: steps.length ? steps : ["按自己的习惯来做。"]
       };
+      if (editing) {
+        // 保留原图（未更换）或待替换的图片句柄
+        if (!state.imageDirty && state.imageKey) recipe.imageKey = state.imageKey;
+        if (!state.imageDirty && state.image) recipe.image = state.image;
+      }
+      return recipe;
     }
 
     function finalizeSave(recipe) {
-      VS.addRecipe(recipe);
-      closeSheet();
-      toast("收好了，已放进菜谱本。");
+      if (editing) {
+        VS.updateRecipe(recipe);
+        closeSheet();
+        toast("改好了，已更新这道菜。");
+      } else {
+        VS.addRecipe(recipe);
+        closeSheet();
+        toast("收好了，已放进菜谱本。");
+      }
       if (typeof options.onSave === "function") options.onSave(recipe);
     }
 
@@ -1129,7 +1224,8 @@
 
       var recipe = buildRecipe();
 
-      if (state.image && VS.store && VS.store.compressImage && VS.store.saveImage) {
+      var needImageProcess = state.image && (!editing || state.imageDirty);
+      if (needImageProcess && VS.store && VS.store.compressImage && VS.store.saveImage) {
         save.disabled = true;
         save.textContent = "存图中…";
         VS.store
@@ -1144,20 +1240,21 @@
           .catch(function () {
             // 压缩/入库失败时降级为本次会话内嵌预览，不阻塞保存
             recipe.image = state.image;
+            delete recipe.imageKey;
             return recipe;
           })
           .then(function (finalRecipe) {
             finalizeSave(finalRecipe);
           });
       } else {
-        if (state.image) recipe.image = state.image;
+        if (state.image && !recipe.image) recipe.image = state.image;
         finalizeSave(recipe);
       }
     });
 
     openSheet({
-      title: "写一道新菜",
-      subtitle: "写下来，下次就不用想。",
+      title: editing ? "改这道菜" : "写一道新菜",
+      subtitle: editing ? editing.name : "写下来，下次就不用想。",
       content: body,
       footer: [cancel, save],
       variant: "full",

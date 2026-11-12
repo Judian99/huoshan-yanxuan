@@ -553,6 +553,68 @@
     return "r-user-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
   };
 
+  // 按 id 更新菜谱（保留其在列表中的位置）；找不到则退回新增
+  VS.updateRecipe = function (recipe) {
+    var idx = VS.recipes.findIndex(function (r) {
+      return r.id === recipe.id;
+    });
+    if (idx === -1) {
+      VS.addRecipe(recipe);
+      return recipe;
+    }
+    VS.recipes[idx] = recipe;
+    VS.emitChange();
+    return recipe;
+  };
+
+  // 删除菜谱，同时从所有餐单中摘除引用；返回撤销所需的快照
+  VS.deleteRecipe = function (id) {
+    var idx = VS.recipes.findIndex(function (r) {
+      return r.id === id;
+    });
+    if (idx === -1) return null;
+    var recipe = VS.recipes[idx];
+    var refs = [];
+    Object.keys(VS.plans).forEach(function (key) {
+      var plan = VS.plans[key];
+      VS.slots.forEach(function (slot) {
+        var arr = plan[slot.id];
+        if (!arr) return;
+        var at = arr.indexOf(id);
+        while (at !== -1) {
+          refs.push({ day: key, slot: slot.id, index: at });
+          arr.splice(at, 1);
+          at = arr.indexOf(id);
+        }
+      });
+    });
+    VS.recipes.splice(idx, 1);
+    VS.emitChange();
+    return { recipe: recipe, index: idx, refs: refs };
+  };
+
+  // 撤销删除：把菜谱和餐单引用恢复到原位
+  VS.restoreRecipe = function (snapshot) {
+    if (!snapshot || !snapshot.recipe) return;
+    var idx = VS.recipes.findIndex(function (r) {
+      return r.id === snapshot.recipe.id;
+    });
+    if (idx === -1) {
+      var at = Math.min(snapshot.index || 0, VS.recipes.length);
+      VS.recipes.splice(at, 0, snapshot.recipe);
+    }
+    (snapshot.refs || []).forEach(function (ref) {
+      var plan = VS.ensurePlan(ref.day);
+      if (!plan[ref.slot]) plan[ref.slot] = [];
+      var arr = plan[ref.slot];
+      if (arr.indexOf(snapshot.recipe.id) === -1) {
+        var pos = Math.min(ref.index, arr.length);
+        arr.splice(pos, 0, snapshot.recipe.id);
+      }
+    });
+    VS.emitChange();
+  };
+
   /* ---------- 最近点过 ---------- */
 
   VS.recentRecipes = function (limit) {

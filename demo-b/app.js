@@ -175,6 +175,16 @@
             openRecipe(recipe);
           });
           dishes.appendChild(dish);
+          if (!past) {
+            var x = el("button", "b-dish-x");
+            x.type = "button";
+            x.setAttribute("aria-label", "从" + slot.name + "移除 " + recipe.name);
+            x.textContent = "×";
+            x.addEventListener("click", function () {
+              removeOne(recipe, slot.id);
+            });
+            dishes.appendChild(x);
+          }
         });
         main.appendChild(dishes);
       } else {
@@ -278,6 +288,17 @@
       });
     } else {
       VS.ui.toast("这道已经在" + VS.slotName(slotId) + "里了。");
+    }
+  }
+
+  function removeOne(recipe, slotId) {
+    var removed = VS.removeDish(state.selected, slotId, recipe.id);
+    if (removed) {
+      VS.ui.toast("已从" + VS.slotName(slotId) + "移除「" + recipe.name + "」。", {
+        undo: function () {
+          VS.addDish(state.selected, slotId, recipe.id);
+        }
+      });
     }
   }
 
@@ -560,6 +581,16 @@
             openRecipe(recipe);
           });
           dishes.appendChild(dish);
+          if (!past) {
+            var x = el("button", "b-dish-x");
+            x.type = "button";
+            x.setAttribute("aria-label", "从" + slot.name + "移除 " + recipe.name);
+            x.textContent = "×";
+            x.addEventListener("click", function () {
+              removeOne(recipe, slot.id);
+            });
+            dishes.appendChild(x);
+          }
         });
         middle.appendChild(dishes);
       } else {

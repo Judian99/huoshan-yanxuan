@@ -311,6 +311,29 @@
     });
   }
 
+  /* ---------- 孤立图片回收（启动时执行，规避同会话撤销窗口） ---------- */
+
+  function gcImages(db) {
+    var used = {};
+    VS.recipes.forEach(function (r) {
+      if (r.imageKey) used[r.imageKey] = true;
+    });
+    return getAllEntries(db, STORE_IMAGES).then(function (entries) {
+      var orphans = entries.filter(function (e) {
+        return !used[e.key];
+      });
+      if (!orphans.length) return;
+      return tx(db, STORE_IMAGES, "readwrite", function (t) {
+        var os = t.objectStore(STORE_IMAGES);
+        orphans.forEach(function (e) {
+          os.delete(e.key);
+        });
+      }).catch(function (err) {
+        if (window.console) console.error("图片回收失败", err);
+      });
+    });
+  }
+
   /* ---------- 启动 hydrate ---------- */
 
   store.boot = function () {
@@ -345,6 +368,8 @@
           });
         }).then(function () {
           return rebuildImageURLs(db, VS.recipes);
+        }).then(function () {
+          return gcImages(db);
         }).then(function () {
           return { persisted: true };
         });

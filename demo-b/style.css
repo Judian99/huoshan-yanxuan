@@ -349,6 +349,26 @@ html[data-demo="b"] {
   border-bottom: 1px dotted rgba(74, 55, 36, 0.4);
 }
 
+.b-dish-x {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(169, 52, 42, 0.4);
+  border-radius: 50%;
+  color: var(--seal);
+  font-size: 13px;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.b-dish-x:active {
+  background: rgba(169, 52, 42, 0.12);
+  opacity: 1;
+}
+
 .b-meal__empty {
   margin-top: 2px;
   color: rgba(51, 86, 107, 0.72);
