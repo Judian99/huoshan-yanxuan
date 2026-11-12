@@ -149,9 +149,8 @@
   <script src="app.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js").catch(function () {});
-      });
+      // 直接注册（异步且幂等），不依赖 load 事件，避免首启时序竞态
+      navigator.serviceWorker.register("sw.js").catch(function () {});
     }
   </script>
 </body>
